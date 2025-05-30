@@ -3,5 +3,5 @@ package agfj.core.entity;
 /**
  * Represent a Personality's expression
  * */
-public class Speech {
+public final class Speech extends Action {
 }
