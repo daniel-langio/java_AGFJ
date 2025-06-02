@@ -5,12 +5,18 @@ import java.util.List;
 /**
  * Represent a game character
  * */
-public class Character extends Entity {
-    private Personality personality;
-    private Body body;
-    private CharacterState state;
+public abstract class Character extends Entity {
+    /** The mental dimension of the character */
+    protected Personality personality;
 
-    private List<Interaction> interactions;
+    /** The physical dimension of the character */
+    protected Body body;
+
+    /** The state of the character */
+    protected CharacterState state;
+
+    /** List of possible interaction to do with the character */
+    protected List<Interaction> interactions;
 
     /**
      * Applies a state to the character
