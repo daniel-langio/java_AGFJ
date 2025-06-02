@@ -9,6 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Position {
-    private int x;
-    private int y;
+    private Coordinate2d coordinate;
+    private Rotation rotation;
 }
