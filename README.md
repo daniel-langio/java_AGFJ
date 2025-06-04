@@ -3,4 +3,4 @@
 A discussion and interaction-based game.
 
 ## Who is Joanna?
-Not your business :]
+Let's assume that that's a random girl name for an early game.
