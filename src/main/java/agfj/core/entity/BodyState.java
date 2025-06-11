@@ -12,8 +12,8 @@ public class BodyState {
     private int actualHealthPoint;
 
     /** The current cleanness point */
-    private int maxCleannessPoint
+    private int maxCleannessPoint;
 
     /** The current cleanness point */
-    private int actualCleannessPoint
+    private int actualCleannessPoint;
 }
