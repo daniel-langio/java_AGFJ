@@ -31,4 +31,11 @@ public class Body extends Entity {
         position.setCoordinate(newCoo);
         position.setRotation(newRotation);
     }
+
+    /** 
+     * Applies a state to the body
+     * @param state the state to apply */
+    public void applyState(BodyState state) {
+        this.state = state;
+    }
 }
