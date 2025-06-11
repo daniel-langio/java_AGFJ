@@ -9,6 +9,10 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Coordinate2d {
+
+    /** The coordinate on the x-axis */
     protected double x;
+
+    /** The coordinate on the y-axis */
     protected double y;
 }
