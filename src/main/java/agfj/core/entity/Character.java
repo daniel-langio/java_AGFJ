@@ -24,7 +24,8 @@ public abstract class Character extends Entity {
      * @param state the {@link CharacterState} to apply
      * */
     public void applyState(CharacterState state) {
-        throw new  UnsupportedOperationException("Not implemented yet.");
+        this.state = state;
+        this.body.applyState(state.getBodyState());
     }
 
 }
