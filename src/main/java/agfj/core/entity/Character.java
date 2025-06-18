@@ -2,9 +2,12 @@ package agfj.core.entity;
 
 import java.util.List;
 
+import lombok.Getter;
+
 /**
  * Represent a game character
  * */
+@Getter
 public abstract class Character extends Entity {
     /** The mental dimension of the character */
     protected Personality personality;
