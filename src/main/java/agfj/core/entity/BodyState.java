@@ -1,8 +1,13 @@
 package agfj.core.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /**
  * Represent the state of a body
  * */
+@AllArgsConstructor
+@Data
 public class BodyState {
 
     /** The maximum health point */
