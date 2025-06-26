@@ -1,5 +1,6 @@
-package agfj.core.entity;
+package agfj.core.interaction;
 
+import agfj.core.entity.CharacterMood;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

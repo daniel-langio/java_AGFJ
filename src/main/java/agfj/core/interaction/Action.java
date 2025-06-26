@@ -1,4 +1,4 @@
-package agfj.core.entity;
+package agfj.core.interaction;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package agfj.core.entity;
+package agfj.core.interaction;
 
 import agfj.core.physics.Vector2D;
 import lombok.Getter;

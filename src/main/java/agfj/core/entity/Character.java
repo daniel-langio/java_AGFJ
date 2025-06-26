@@ -2,6 +2,7 @@ package agfj.core.entity;
 
 import java.util.List;
 
+import agfj.core.interaction.Interaction;
 import lombok.Getter;
 
 /**

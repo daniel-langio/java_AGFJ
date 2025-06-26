@@ -1,5 +1,6 @@
 package agfj.core.entity;
 
+import agfj.core.interaction.Movement;
 import agfj.core.physics.Coordinate2d;
 import agfj.core.physics.Position;
 import agfj.core.physics.Rotation;
@@ -23,8 +24,8 @@ public class Body extends Entity {
         Coordinate2d newCoo = position.getCoordinate();
         Rotation newRotation = position.getRotation();
 
-        newCoo.setX(newCoo.getX() + movement.getVelocity().getX() * movement.speed);
-        newCoo.setY(newCoo.getY() + movement.getVelocity().getY() * movement.speed);
+        newCoo.setX(newCoo.getX() + movement.getVelocity().getX() * movement.getSpeed());
+        newCoo.setY(newCoo.getY() + movement.getVelocity().getY() * movement.getSpeed());
 
         newRotation.setValue(movement.getRotation());
 

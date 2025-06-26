@@ -1,5 +1,6 @@
 package agfj.core.entity;
 
+import agfj.core.interaction.Action;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
