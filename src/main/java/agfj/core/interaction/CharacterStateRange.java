@@ -1,6 +1,9 @@
-package agfj.core.entity;
+package agfj.core.interaction;
 
+import agfj.core.entity.CharacterState;
 import agfj.core.type.ValueScope;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * Represent a set of character state
@@ -9,6 +12,8 @@ import agfj.core.type.ValueScope;
  *
  * won't include action in this, because 'j'ai la flemme'
  * */
+@AllArgsConstructor
+@Data
 public class CharacterStateRange implements ValueScope<CharacterState> {
 
     /** A set of body state */

@@ -1,5 +1,6 @@
-package agfj.core.entity;
+package agfj.core.interaction;
 
+import agfj.core.entity.BodyState;
 import agfj.core.type.IntegerRange;
 import agfj.core.type.ValueScope;
 import lombok.AllArgsConstructor;
