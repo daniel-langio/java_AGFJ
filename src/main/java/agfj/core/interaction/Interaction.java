@@ -1,7 +1,6 @@
 package agfj.core.interaction;
 
 import agfj.core.entity.Character;
-import agfj.core.entity.CharacterStateRange;
 
 /**
  * Represent an action to do for a specific character state
