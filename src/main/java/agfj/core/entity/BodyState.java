@@ -21,4 +21,7 @@ public class BodyState {
 
     /** The current cleanness point */
     private int actualCleannessPoint;
+
+    /** Action base speed */
+    private int speed;
 }

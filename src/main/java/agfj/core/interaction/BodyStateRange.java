@@ -27,11 +27,15 @@ public class BodyStateRange implements ValueScope<BodyState> {
   /** The range of current cleanness point */
   private IntegerRange actualCleannessPoint;
 
+  /** The range of action base speed */
+  private IntegerRange speed;
+
   @Override
   public Boolean isInclude(BodyState value) {
     return maxHealthPoint.isInclude(value.getMaxHealthPoint()) &&
             actualHealthPoint.isInclude(value.getActualHealthPoint()) &&
             maxCleannessPoint.isInclude(value.getMaxCleannessPoint()) &&
-            actualCleannessPoint.isInclude(value.getActualCleannessPoint());
+            actualCleannessPoint.isInclude(value.getActualCleannessPoint()) &&
+            speed.isInclude(value.getSpeed());
   }
 }
