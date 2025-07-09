@@ -4,10 +4,12 @@ import agfj.core.interaction.Movement;
 import agfj.core.physics.Coordinate2d;
 import agfj.core.physics.Position;
 import agfj.core.physics.Rotation;
+import lombok.Getter;
 
 /**
  * Represent a character's body
  * */
+@Getter
 public class Body extends Entity {
     /** The state of the body */
     private BodyState state;
