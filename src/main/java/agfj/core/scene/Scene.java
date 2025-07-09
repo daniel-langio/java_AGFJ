@@ -11,6 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class Scene {
+
+    /** Scene description */
     private String description;
+
+    /** Entities in the scene*/
     private List<Entity> entities;
 }
