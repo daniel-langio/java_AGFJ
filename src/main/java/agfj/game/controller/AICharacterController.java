@@ -1,12 +1,14 @@
 package agfj.game.controller;
 
+import agfj.game.entity.ControllableCharacter;
+
 /**
  * Automated player controller
  * TODO: implement
  * */
 public class AICharacterController extends CharacterController {
     @Override
-    void update() {
-
+    public void update(ControllableCharacter character) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

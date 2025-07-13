@@ -13,8 +13,8 @@ public abstract class CharacterController {
     protected ControllableCharacter character;
 
     /**
-     * Method executed in each game loop iteration.
+     * Method executed in each game loop iteration to update character's state
      * Specifies when to move where.
      * */
-    abstract void update();
+    public abstract void update(ControllableCharacter character);
 }
