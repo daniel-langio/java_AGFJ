@@ -15,6 +15,8 @@ public abstract class CharacterController {
     /**
      * Method executed in each game loop iteration to update character's state
      * Specifies when to move where.
+     *
+     * @param character the controlled character
      * */
     public abstract void update(ControllableCharacter character);
 }
