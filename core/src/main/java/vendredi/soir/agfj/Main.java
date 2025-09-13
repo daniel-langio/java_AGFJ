@@ -1,32 +1,43 @@
 package vendredi.soir.agfj;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import vendredi.soir.agfj.game.MyGame;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
-    private SpriteBatch batch;
-    private Texture image;
+    private MyGame myGame;
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
+        myGame = new MyGame();
     }
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        batch.end();
+        input();
+        logic();
+        draw();
+    }
+
+    private void input() {
+        myGame.input();
+    }
+
+    private void logic() {
+        myGame.logic();
+    }
+
+    private void draw() {
+        myGame.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        myGame.resize(width, height);
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
-        image.dispose();
+        myGame.dispose();
     }
 }
