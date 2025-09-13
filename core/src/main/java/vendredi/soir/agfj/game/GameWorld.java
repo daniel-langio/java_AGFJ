@@ -19,6 +19,15 @@ public class GameWorld {
         entities.add(entity);
     }
 
+    public void animate(float deltaTime) {
+        List<AnimatedEntity> animatedEntities =
+            entities.stream()
+                .filter(entity -> entity instanceof AnimatedEntity)
+                .map(entity -> (AnimatedEntity) entity).toList();
+
+        animatedEntities.forEach(animatedEntity -> animatedEntity.animate(deltaTime));
+    }
+
     public List<Sprite> getSprites() {
         return entities.stream().map(TexturedEntity::toSprite).toList();
     }

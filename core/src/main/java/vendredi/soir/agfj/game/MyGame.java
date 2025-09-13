@@ -12,8 +12,6 @@ public class MyGame {
     private final int WORLD_WIDTH = 200;
     private final int WORLD_HEIGHT = 200;
 
-    private float runTime = 0;
-
     private final SpriteBatch spriteBatch;
     private final Viewport viewport;
     private final SpriteManager spriteManager;
@@ -36,8 +34,8 @@ public class MyGame {
 
     public void logic() {
         final float deltaTime = Gdx.graphics.getDeltaTime();
-        runTime += deltaTime;
 
+        world.animate(deltaTime);
     }
 
     public void draw() {
