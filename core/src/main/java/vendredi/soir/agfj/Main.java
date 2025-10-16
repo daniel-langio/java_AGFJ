@@ -1,11 +1,12 @@
 package vendredi.soir.agfj;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import vendredi.soir.agfj.game.Game;
 import vendredi.soir.agfj.game.MyGame;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
-  private MyGame myGame;
+  private Game myGame;
 
   @Override
   public void create() {
