@@ -17,6 +17,7 @@ public class TexturedEntity extends Sprite {
     if (texture != null) {
       setTexture(texture);
       getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+      setSize(texture.getWidth(), texture.getHeight());
       setPosition(0, 0);
     }
   }
