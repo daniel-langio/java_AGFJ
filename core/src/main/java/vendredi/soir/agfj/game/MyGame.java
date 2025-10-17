@@ -23,7 +23,13 @@ public class MyGame extends Game {
                   30,
                   AnimationCategory.IDLE,
                   SpriteLoader.loadSpriteSet(
-                      "sprites/prototypes/character/Animations/Walking.png", 128, 128, 0, 0, 12))));
+                      "sprites/prototypes/character/Animations/Walking.png", 128, 128, 0, 0, 12)),
+            new SpriteAnimation(
+              0,
+              5,
+              AnimationCategory.JUMP,
+              SpriteLoader.loadSpriteSet(
+                "sprites/prototypes/character/Animations/Jumping.png", 128, 128, 0, 0, 10))));
 
   public MyGame() {
     super();
@@ -39,5 +45,9 @@ public class MyGame extends Game {
   public void logic() {
     super.logic();
     player.setX(player.getX() + 0.5f);
+    animatedPlayer.setX(animatedPlayer.getX() + 0.2f);
+    if (upTime > 5) {
+      animatedPlayer.play(AnimationCategory.JUMP);
+    }
   }
 }
