@@ -25,6 +25,17 @@ public class AnimatedEntity extends TexturedEntity {
     setTexture(getDefaultTexture());
   }
 
+  public void play(AnimationCategory category) {
+    if (category != currentAnimationCategory) {
+      resetCurrentAnimation();
+      currentAnimationCategory = category;
+    }
+  }
+
+  public void resetCurrentAnimation() {
+    getCurrentAnimation().reset();
+  }
+
   @Override
   public void draw(Batch batch) {
     batch.draw(getCurrentAnimation().getCurrentFrame(), getX(), getY(), getWidth(), getHeight());
