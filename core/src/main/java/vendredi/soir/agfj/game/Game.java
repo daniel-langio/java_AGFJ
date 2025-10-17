@@ -15,6 +15,8 @@ public abstract class Game {
   protected final Viewport viewport;
   protected final GameWorld world;
 
+  protected double upTime = 0.0;
+
   public Game() {
     this.spriteBatch = new SpriteBatch();
     this.viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT);
@@ -31,6 +33,7 @@ public abstract class Game {
   public void logic() {
     final float deltaTime = Gdx.graphics.getDeltaTime();
 
+    upTime += deltaTime;
     world.animate(deltaTime);
   }
 
