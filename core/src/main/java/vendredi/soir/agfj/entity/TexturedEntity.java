@@ -9,16 +9,8 @@ public class TexturedEntity extends Sprite {
   protected final String name;
 
   public TexturedEntity(String name, Texture texture) {
+    super(texture);
     this.name = name;
-    initTexture(texture);
-  }
-
-  protected void initTexture(Texture texture) {
-    if (texture != null) {
-      setTexture(texture);
-      getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-      setPosition(0, 0);
-    }
   }
 
   public Sprite toSprite() {

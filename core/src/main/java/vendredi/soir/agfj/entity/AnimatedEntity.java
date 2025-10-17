@@ -21,7 +21,7 @@ public class AnimatedEntity extends TexturedEntity {
   public AnimatedEntity(String name, List<SpriteAnimation> animations) {
     super(name, null);
     setAnimations(animations);
-    initTexture(getDefaultTexture());
+    setTexture(getDefaultTexture());
   }
 
   @Override
