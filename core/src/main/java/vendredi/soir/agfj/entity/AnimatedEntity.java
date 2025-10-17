@@ -2,6 +2,7 @@ package vendredi.soir.agfj.entity;
 
 import static vendredi.soir.agfj.graphics.sprites.AnimationCategory.IDLE;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import java.util.List;
@@ -19,7 +20,7 @@ public class AnimatedEntity extends TexturedEntity {
   private List<SpriteAnimation> animations;
 
   public AnimatedEntity(String name, List<SpriteAnimation> animations) {
-    super(name, null);
+    super(name, new Texture(Gdx.files.internal("sprites/prototypes/platforms/Tiles/Tile_55.png")));
     setAnimations(animations);
     setTexture(getDefaultTexture());
   }
