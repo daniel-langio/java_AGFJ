@@ -12,8 +12,4 @@ public class TexturedEntity extends Sprite {
     super(texture);
     this.name = name;
   }
-
-  public Sprite toSprite() {
-    return new Sprite(getTexture());
-  }
 }

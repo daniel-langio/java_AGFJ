@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import vendredi.soir.agfj.graphics.sprites.SpriteManager;
 
 public abstract class Game {
   protected final int WORLD_WIDTH = 200;
@@ -14,13 +13,11 @@ public abstract class Game {
 
   protected final SpriteBatch spriteBatch;
   protected final Viewport viewport;
-  protected final SpriteManager spriteManager;
   protected final GameWorld world;
 
   public Game() {
     this.spriteBatch = new SpriteBatch();
     this.viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT);
-    this.spriteManager = new SpriteManager(spriteBatch);
 
     this.world = new GameWorld();
     init();
@@ -48,7 +45,7 @@ public abstract class Game {
   }
 
   public void dispose() {
-    spriteManager.disposeSprites(world.getSprites());
+    world.dispose();
   }
 
   public void resize(int width, int height) {

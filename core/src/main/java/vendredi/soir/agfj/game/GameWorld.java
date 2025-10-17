@@ -28,8 +28,8 @@ public class GameWorld {
     animatedEntities.forEach(animatedEntity -> animatedEntity.animate(deltaTime));
   }
 
-  public List<Sprite> getSprites() {
-    return entities.stream().map(TexturedEntity::toSprite).toList();
+  public void dispose() {
+    entities.forEach(entity -> entity.getTexture().dispose());
   }
 
   public void draw(SpriteBatch batch) {
