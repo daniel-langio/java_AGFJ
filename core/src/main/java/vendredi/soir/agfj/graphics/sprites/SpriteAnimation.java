@@ -13,6 +13,7 @@ public class SpriteAnimation {
   private int currentFrameIndex;
   @Setter private boolean loop = true;
   private float stateTime = 0;
+  @Setter private boolean playing = true;
 
   public SpriteAnimation(
       int startFrameIndex, int fps, AnimationCategory category, List<TextureRegion> frames) {
@@ -27,14 +28,16 @@ public class SpriteAnimation {
   }
 
   public void animate(float deltaTime) {
-    stateTime += deltaTime;
+    if (playing) {
+      stateTime += deltaTime;
 
-    final int frameNumber = (int) (stateTime / frameDuration);
-    final int framesSize = frames.size();
-    if (loop) {
-      currentFrameIndex = frameNumber % framesSize;
-    } else {
-      currentFrameIndex = Math.min(frameNumber, framesSize - 1);
+      final int frameNumber = (int) (stateTime / frameDuration);
+      final int framesSize = frames.size();
+      if (loop) {
+        currentFrameIndex = frameNumber % framesSize;
+      } else {
+        currentFrameIndex = Math.min(frameNumber, framesSize - 1);
+      }
     }
   }
 
