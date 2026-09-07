@@ -8,8 +8,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public abstract class Game {
-  protected final int WORLD_WIDTH = 200;
-  protected final int WORLD_HEIGHT = 200;
+  public static final int WORLD_WIDTH = 200;
+  public static final int WORLD_HEIGHT = 200;
 
   protected final SpriteBatch spriteBatch;
   protected final Viewport viewport;

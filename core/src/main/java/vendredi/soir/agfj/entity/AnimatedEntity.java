@@ -2,8 +2,10 @@ package vendredi.soir.agfj.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Rectangle;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 import vendredi.soir.agfj.graphics.sprites.SpriteAnimation;
 
 @Getter
@@ -11,6 +13,7 @@ public class AnimatedEntity extends TexturedEntity {
   private final String defaultActionId;
   private final List<SpriteAnimation> animations;
   private String currentActionId;
+  @Setter private Rectangle bounceBounds;
 
   public AnimatedEntity(String name, List<SpriteAnimation> animations, String defaultActionId) {
     super(name, resolveDefaultTexture(animations, defaultActionId));
@@ -39,6 +42,27 @@ public class AnimatedEntity extends TexturedEntity {
     SpriteAnimation currentAnimation = getCurrentAnimation();
     currentAnimation.animate(deltaTime);
     translate(currentAnimation.getVx() * deltaTime, currentAnimation.getVy() * deltaTime);
+    if (bounceBounds != null) {
+      bounceWithinBounds(currentAnimation);
+    }
+  }
+
+  private void bounceWithinBounds(SpriteAnimation currentAnimation) {
+    if (getX() < bounceBounds.x) {
+      setX(bounceBounds.x);
+      currentAnimation.setVx(Math.abs(currentAnimation.getVx()));
+    } else if (getX() + getWidth() > bounceBounds.x + bounceBounds.width) {
+      setX(bounceBounds.x + bounceBounds.width - getWidth());
+      currentAnimation.setVx(-Math.abs(currentAnimation.getVx()));
+    }
+
+    if (getY() < bounceBounds.y) {
+      setY(bounceBounds.y);
+      currentAnimation.setVy(Math.abs(currentAnimation.getVy()));
+    } else if (getY() + getHeight() > bounceBounds.y + bounceBounds.height) {
+      setY(bounceBounds.y + bounceBounds.height - getHeight());
+      currentAnimation.setVy(-Math.abs(currentAnimation.getVy()));
+    }
   }
 
   public Texture getDefaultTexture() {

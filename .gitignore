@@ -2,6 +2,9 @@
 .gradle/
 gradle-app.setting
 /build/
+
+## Video export output:
+/output/
 /android/build/
 /core/build/
 /lwjgl2/build/

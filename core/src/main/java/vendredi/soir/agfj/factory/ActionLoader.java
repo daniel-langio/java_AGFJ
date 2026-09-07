@@ -1,7 +1,6 @@
 package vendredi.soir.agfj.factory;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import java.util.HashMap;
 import java.util.Map;
 import vendredi.soir.agfj.data.ActionDefinition;
@@ -12,8 +11,9 @@ public final class ActionLoader {
   public static Map<String, ActionDefinition> loadAll(String directoryPath) {
     Map<String, ActionDefinition> actions = new HashMap<>();
 
-    for (FileHandle file : Gdx.files.internal(directoryPath).list(".json")) {
-      ActionDefinition action = GameDataJson.instance().fromJson(ActionDefinition.class, file);
+    for (String path : AssetManifest.listJsonFiles(directoryPath)) {
+      ActionDefinition action =
+          GameDataJson.instance().fromJson(ActionDefinition.class, Gdx.files.internal(path));
       actions.put(action.getId(), action);
     }
 

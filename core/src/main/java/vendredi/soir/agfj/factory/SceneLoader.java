@@ -1,8 +1,10 @@
 package vendredi.soir.agfj.factory;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Rectangle;
 import java.util.Map;
 import vendredi.soir.agfj.data.ActionDefinition;
+import vendredi.soir.agfj.data.BoundsDefinition;
 import vendredi.soir.agfj.data.EntityDefinition;
 import vendredi.soir.agfj.data.EntityInstanceDefinition;
 import vendredi.soir.agfj.data.SceneDefinition;
@@ -33,6 +35,17 @@ public final class SceneLoader {
           EntityFactory.create(
               entityDefinition, actions, instance.getInstanceName(), instance.getInitialActionId());
       entity.setPosition(instance.getX(), instance.getY());
+
+      BoundsDefinition bounceBounds = instance.getBounceBounds();
+      if (bounceBounds != null) {
+        entity.setBounceBounds(
+            new Rectangle(
+                bounceBounds.getX(),
+                bounceBounds.getY(),
+                bounceBounds.getWidth(),
+                bounceBounds.getHeight()));
+      }
+
       world.addEntity(entity);
     }
   }

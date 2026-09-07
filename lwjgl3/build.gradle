@@ -32,6 +32,7 @@ dependencies {
   implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
   implementation project(':core')
+  implementation "org.jcodec:jcodec-javase:0.2.5"
 
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-backend-lwjgl3:$graalHelperVersion"
@@ -66,6 +67,23 @@ jar {
     attributes 'Main-Class': project.mainClassName
   }
 // this last step may help on some OSes that need extra instruction to make runnable JARs.
+  doLast {
+    file(archiveFile).setExecutable(true, false)
+  }
+}
+
+// Builds a fat jar for the headless video-export tool (VideoExportLauncher), separate from the
+// interactive game's jar task above.
+tasks.register('videoExportJar', Jar) {
+  archiveFileName.set("${appName}-video-export-${projectVersion}.jar")
+  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+  dependsOn configurations.runtimeClasspath
+  from sourceSets.main.output
+  from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+  exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
+  manifest {
+    attributes 'Main-Class': 'vendredi.soir.agfj.lwjgl3.VideoExportLauncher'
+  }
   doLast {
     file(archiveFile).setExecutable(true, false)
   }

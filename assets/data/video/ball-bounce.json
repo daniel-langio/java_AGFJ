@@ -1,0 +1,10 @@
+{
+  "actionsDir": "data/actions",
+  "entitiesDir": "data/entities",
+  "sceneFile": "data/scenes/ball-bounce-scene.json",
+  "outputPath": "output/ball-bounce.mp4",
+  "fps": 30,
+  "durationSeconds": 10,
+  "width": 600,
+  "height": 600
+}

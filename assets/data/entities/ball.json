@@ -1,0 +1,16 @@
+{
+  "id": "ball",
+  "width": 16,
+  "height": 16,
+  "defaultActionId": "bounce",
+  "animations": [
+    {
+      "actionId": "bounce",
+      "spriteSheetPath": "sprites/prototypes/ball/Ball.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frameCount": 1,
+      "fps": 1
+    }
+  ]
+}

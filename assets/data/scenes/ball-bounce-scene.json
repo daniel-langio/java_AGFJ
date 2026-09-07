@@ -1,0 +1,17 @@
+{
+  "id": "ball-bounce",
+  "entities": [
+    {
+      "entityDefinitionId": "ball",
+      "instanceName": "Ball",
+      "x": 40,
+      "y": 60,
+      "bounceBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 200
+      }
+    }
+  ]
+}

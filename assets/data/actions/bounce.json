@@ -1,0 +1,6 @@
+{
+  "id": "bounce",
+  "vx": 40,
+  "vy": 30,
+  "loop": true
+}
