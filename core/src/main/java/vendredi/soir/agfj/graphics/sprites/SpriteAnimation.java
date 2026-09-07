@@ -7,19 +7,21 @@ import lombok.Setter;
 
 @Getter
 public class SpriteAnimation {
-  private final AnimationCategory category;
+  private final String actionId;
   private final List<TextureRegion> frames;
   private final float frameDuration;
   private int currentFrameIndex;
   @Setter private boolean loop = true;
   private float stateTime = 0;
   @Setter private boolean playing = true;
+  @Setter private float vx = 0f;
+  @Setter private float vy = 0f;
 
   public SpriteAnimation(
-      int startFrameIndex, int fps, AnimationCategory category, List<TextureRegion> frames) {
+      int startFrameIndex, int fps, String actionId, List<TextureRegion> frames) {
     this.currentFrameIndex = startFrameIndex;
     this.frameDuration = 1f / fps;
-    this.category = category;
+    this.actionId = actionId;
     this.frames = frames;
   }
 

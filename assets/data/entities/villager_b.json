@@ -1,0 +1,16 @@
+{
+  "id": "villager_b",
+  "width": 20,
+  "height": 20,
+  "defaultActionId": "walk",
+  "animations": [
+    {
+      "actionId": "walk",
+      "spriteSheetPath": "sprites/prototypes/character/Animations/Crawl.png",
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6,
+      "fps": 6
+    }
+  ]
+}

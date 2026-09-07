@@ -1,0 +1,16 @@
+{
+  "id": "villager_a",
+  "width": 20,
+  "height": 20,
+  "defaultActionId": "walk",
+  "animations": [
+    {
+      "actionId": "walk",
+      "spriteSheetPath": "sprites/prototypes/character/Animations/Running.png",
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 8,
+      "fps": 10
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "demo",
+  "entities": [
+    {
+      "entityDefinitionId": "hero",
+      "instanceName": "Hero",
+      "x": 20,
+      "y": 20
+    },
+    {
+      "entityDefinitionId": "villager_a",
+      "instanceName": "VillagerA",
+      "x": 10,
+      "y": 60,
+      "initialActionId": "walk"
+    },
+    {
+      "entityDefinitionId": "villager_b",
+      "instanceName": "VillagerB",
+      "x": 10,
+      "y": 100,
+      "initialActionId": "walk"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "hero",
+  "width": 24,
+  "height": 24,
+  "defaultActionId": "idle",
+  "animations": [
+    {
+      "actionId": "idle",
+      "spriteSheetPath": "sprites/prototypes/character/Animations/Walking.png",
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 12,
+      "fps": 8
+    },
+    {
+      "actionId": "jump",
+      "spriteSheetPath": "sprites/prototypes/character/Animations/Jumping.png",
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 10,
+      "fps": 12
+    }
+  ]
+}

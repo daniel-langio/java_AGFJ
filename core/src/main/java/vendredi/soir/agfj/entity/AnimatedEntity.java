@@ -1,34 +1,28 @@
 package vendredi.soir.agfj.entity;
 
-import static vendredi.soir.agfj.graphics.sprites.AnimationCategory.IDLE;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
-import vendredi.soir.agfj.graphics.sprites.AnimationCategory;
 import vendredi.soir.agfj.graphics.sprites.SpriteAnimation;
 
 @Getter
 public class AnimatedEntity extends TexturedEntity {
-  private static final List<AnimationCategory> REQUIRED_ANIMATION_CATEGORIES = List.of(IDLE);
-  private static final AnimationCategory DEFAULT_ANIMATION_CATEGORY = IDLE;
-  @Setter private AnimationCategory currentAnimationCategory = DEFAULT_ANIMATION_CATEGORY;
-  @Setter private boolean loopAnimation = true;
-  private List<SpriteAnimation> animations;
+  private final String defaultActionId;
+  private final List<SpriteAnimation> animations;
+  private String currentActionId;
 
-  public AnimatedEntity(String name, List<SpriteAnimation> animations) {
-    super(name, new Texture(Gdx.files.internal("sprites/prototypes/platforms/Tiles/Tile_55.png")));
-    setAnimations(animations);
-    setTexture(getDefaultTexture());
+  public AnimatedEntity(String name, List<SpriteAnimation> animations, String defaultActionId) {
+    super(name, resolveDefaultTexture(animations, defaultActionId));
+    this.animations = validateAnimations(animations, defaultActionId);
+    this.defaultActionId = defaultActionId;
+    this.currentActionId = defaultActionId;
   }
 
-  public void play(AnimationCategory category) {
-    if (category != currentAnimationCategory) {
+  public void play(String actionId) {
+    if (!actionId.equals(currentActionId)) {
       resetCurrentAnimation();
-      currentAnimationCategory = category;
+      currentActionId = actionId;
     }
   }
 
@@ -42,7 +36,9 @@ public class AnimatedEntity extends TexturedEntity {
   }
 
   public void animate(float deltaTime) {
-    getCurrentAnimation().animate(deltaTime);
+    SpriteAnimation currentAnimation = getCurrentAnimation();
+    currentAnimation.animate(deltaTime);
+    translate(currentAnimation.getVx() * deltaTime, currentAnimation.getVy() * deltaTime);
   }
 
   public Texture getDefaultTexture() {
@@ -50,41 +46,32 @@ public class AnimatedEntity extends TexturedEntity {
   }
 
   public SpriteAnimation getCurrentAnimation() {
-    SpriteAnimation currentAnimation =
-        animations.stream()
-            .filter(a -> a.getCategory().equals(currentAnimationCategory))
-            .findFirst()
-            .orElse(null);
-
-    if (currentAnimation == null) {
-      throw new IllegalArgumentException(
-          String.format("Animation category %s not found", currentAnimationCategory));
-    }
-
-    return currentAnimation;
+    return findAnimation(animations, currentActionId);
   }
 
   public SpriteAnimation getDefaultAnimation() {
-    SpriteAnimation defaultAnimation =
-        animations.stream()
-            .filter(a -> a.getCategory().equals(DEFAULT_ANIMATION_CATEGORY))
-            .findFirst()
-            .orElse(null);
-
-    if (defaultAnimation == null) {
-      throw new IllegalArgumentException("No default animation provided for this entity");
-    }
-
-    return defaultAnimation;
+    return findAnimation(animations, defaultActionId);
   }
 
-  public void setAnimations(List<SpriteAnimation> animations) {
-    if (animations.stream()
-        .noneMatch(a -> REQUIRED_ANIMATION_CATEGORIES.contains(a.getCategory()))) {
+  private static Texture resolveDefaultTexture(
+      List<SpriteAnimation> animations, String defaultActionId) {
+    return findAnimation(animations, defaultActionId).getCurrentFrame().getTexture();
+  }
+
+  private static List<SpriteAnimation> validateAnimations(
+      List<SpriteAnimation> animations, String defaultActionId) {
+    if (animations.stream().noneMatch(a -> a.getActionId().equals(defaultActionId))) {
       throw new IllegalArgumentException(
-          String.format(
-              "This entity requires an animation for : %s", REQUIRED_ANIMATION_CATEGORIES));
+          String.format("This entity requires an animation for : %s", defaultActionId));
     }
-    this.animations = animations;
+    return animations;
+  }
+
+  private static SpriteAnimation findAnimation(List<SpriteAnimation> animations, String actionId) {
+    return animations.stream()
+        .filter(a -> a.getActionId().equals(actionId))
+        .findFirst()
+        .orElseThrow(
+            () -> new IllegalArgumentException(String.format("Action %s not found", actionId)));
   }
 }
