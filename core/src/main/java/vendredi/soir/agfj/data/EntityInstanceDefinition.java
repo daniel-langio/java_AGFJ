@@ -12,4 +12,6 @@ public class EntityInstanceDefinition {
   private float y = 0f;
   private String initialActionId;
   private BoundsDefinition bounceBounds;
+  private ControlDefinition control;
+  private boolean solid = false;
 }

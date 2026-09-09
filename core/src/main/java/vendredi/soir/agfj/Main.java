@@ -1,16 +1,26 @@
 package vendredi.soir.agfj;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import java.util.function.Supplier;
 import vendredi.soir.agfj.game.Game;
 import vendredi.soir.agfj.game.MyGame;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
+  private final Supplier<Game> gameFactory;
   private Game myGame;
+
+  public Main() {
+    this(MyGame::new);
+  }
+
+  public Main(Supplier<Game> gameFactory) {
+    this.gameFactory = gameFactory;
+  }
 
   @Override
   public void create() {
-    myGame = new MyGame();
+    myGame = gameFactory.get();
   }
 
   @Override

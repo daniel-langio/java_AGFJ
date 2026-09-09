@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Rectangle;
 import java.util.Map;
 import vendredi.soir.agfj.data.ActionDefinition;
 import vendredi.soir.agfj.data.BoundsDefinition;
+import vendredi.soir.agfj.data.ControlDefinition;
+import vendredi.soir.agfj.data.DeactivationTrigger;
 import vendredi.soir.agfj.data.EntityDefinition;
 import vendredi.soir.agfj.data.EntityInstanceDefinition;
 import vendredi.soir.agfj.data.SceneDefinition;
@@ -46,7 +48,25 @@ public final class SceneLoader {
                 bounceBounds.getHeight()));
       }
 
+      ControlDefinition control = instance.getControl();
+      if (control != null) {
+        validateControl(control, instance.getEntityDefinitionId());
+        entity.setControlDefinition(control);
+      }
+      entity.setSolid(instance.isSolid());
+
       world.addEntity(entity);
+    }
+  }
+
+  private static void validateControl(ControlDefinition control, String entityDefinitionId) {
+    if (control.getDeactivateOn() == DeactivationTrigger.TIMEOUT
+        && (control.getDeactivateAfterSeconds() == null || control.getDeactivateAfterSeconds() <= 0)) {
+      throw new IllegalArgumentException(
+          String.format(
+              "Entity %s declares control.deactivateOn=TIMEOUT but no positive"
+                  + " deactivateAfterSeconds was given",
+              entityDefinitionId));
     }
   }
 }
