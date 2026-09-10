@@ -31,13 +31,13 @@ A manual-only GitHub Actions workflow (`.github/workflows/showoff-video.yml`) do
 gh workflow run showoff-video.yml --ref dev
 ```
 
-Once it finishes, download the video from that run's **Artifacts** section (`ball-bounce-showoff`, contains the `.mp4`) — either in the Actions tab on GitHub, or:
+It renders both the `ball-bounce` and `two-balls-collide` scenes (nothing needing real mouse input, unlike `paddle-control`, since there's no mouse on a CI runner) and publishes both ways:
 
-```
-gh run download <run-id> --name ball-bounce-showoff
-```
-
-Artifacts expire after 30 days. This only runs the `ball-bounce` scene — it needs no real mouse, unlike the `paddle-control` demo.
+- **Durable, always-current link:** the [`showoff-latest` release](../../releases/tag/showoff-latest) — overwritten on every run, so this link always has the newest videos, playable right in the browser.
+- **Per-run artifact:** the triggering run's **Artifacts** section (`ball-bounce-showoff` / `two-balls-collide-showoff`), if you want that specific run's output — expires after 30 days:
+  ```
+  gh run download <run-id> --name ball-bounce-showoff
+  ```
 
 ## Scene/entity/action files
 
