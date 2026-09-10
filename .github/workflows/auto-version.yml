@@ -70,3 +70,4 @@ jobs:
           gh release create "${{ steps.version.outputs.new_tag }}" \
             --title "${{ steps.version.outputs.new_tag }}" \
             --generate-notes
+# trivial test comment
