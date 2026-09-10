@@ -1,0 +1,33 @@
+{
+  "id": "two-balls-collide",
+  "entities": [
+    {
+      "entityDefinitionId": "ball",
+      "instanceName": "BallA",
+      "x": 20,
+      "y": 90,
+      "initialActionId": "bounce",
+      "solid": true,
+      "bounceBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 200
+      }
+    },
+    {
+      "entityDefinitionId": "ball-blue",
+      "instanceName": "BallB",
+      "x": 160,
+      "y": 100,
+      "initialActionId": "bounce-opposite",
+      "solid": true,
+      "bounceBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 200
+      }
+    }
+  ]
+}
