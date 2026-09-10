@@ -39,6 +39,18 @@ It renders both the `ball-bounce` and `two-balls-collide` scenes (nothing needin
   gh run download <run-id> --name ball-bounce-showoff
   ```
 
+## Releases
+
+`projectVersion` in `gradle.properties` and the repo's release tags follow semver, kept in sync automatically:
+
+- **Every merge to `dev`** bumps and tags itself (`.github/workflows/auto-version.yml`): a `feat:` commit since the last tag bumps minor, anything else bumps patch. Major is never bumped automatically.
+- **Major version bumps are manual** (`.github/workflows/major-version.yml`, `workflow_dispatch` only) — a deliberate action, not something inferred from a commit message:
+  ```
+  gh workflow run major-version.yml --ref dev
+  ```
+
+Both create a git tag (`vX.Y.Z`) and a GitHub Release with auto-generated notes.
+
 ## Scene/entity/action files
 
 Edit or add JSON under `assets/data/actions`, `assets/data/entities`, `assets/data/scenes` to change what's in a scene — no Java changes needed.
