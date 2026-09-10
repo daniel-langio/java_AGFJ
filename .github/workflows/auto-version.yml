@@ -2,7 +2,7 @@ name: Auto version bump
 
 on:
   push:
-    branches: [dev, ci/semver-releases] # TEMP: testing only, will narrow back to [dev] before merge
+    branches: [dev]
 
 permissions:
   contents: write
@@ -70,4 +70,3 @@ jobs:
           gh release create "${{ steps.version.outputs.new_tag }}" \
             --title "${{ steps.version.outputs.new_tag }}" \
             --generate-notes
-# trivial test comment
