@@ -14,4 +14,5 @@ public class VideoExportConfig {
   private int durationSeconds = 10;
   private int width = 600;
   private int height = 600;
+  private Integer stopAfterCollisionCount;
 }

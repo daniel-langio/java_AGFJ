@@ -17,6 +17,7 @@ public abstract class Game {
   protected final Viewport viewport;
   protected final GameWorld world;
   protected final ControlSystem controlSystem;
+  protected final CollisionSystem collisionSystem;
 
   protected double upTime = 0.0;
 
@@ -24,6 +25,7 @@ public abstract class Game {
     this.spriteBatch = new SpriteBatch();
     this.viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT);
     this.controlSystem = new ControlSystem();
+    this.collisionSystem = new CollisionSystem();
 
     this.world = new GameWorld();
     init();
@@ -41,7 +43,7 @@ public abstract class Game {
 
     upTime += deltaTime;
     world.animate(deltaTime);
-    CollisionSystem.resolve(world);
+    collisionSystem.resolve(world);
   }
 
   public void draw() {

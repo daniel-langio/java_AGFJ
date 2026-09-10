@@ -22,6 +22,7 @@ import vendredi.soir.agfj.factory.EntityDefinitionLoader;
 import vendredi.soir.agfj.factory.SceneLoader;
 import vendredi.soir.agfj.game.Game;
 import vendredi.soir.agfj.game.GameWorld;
+import vendredi.soir.agfj.system.CollisionSystem;
 
 /**
  * Drives the same GameWorld/AnimatedEntity/SceneLoader pipeline as the interactive game, but with
@@ -34,10 +35,13 @@ public class VideoExportApplication implements ApplicationListener {
   private SpriteBatch spriteBatch;
   private Viewport viewport;
   private GameWorld world;
+  private final CollisionSystem collisionSystem = new CollisionSystem();
   private AWTSequenceEncoder encoder;
   private int totalFrames;
   private int framesEncoded;
   private float fixedDeltaTime;
+  private int tailFrames;
+  private Integer stopFrame;
 
   public VideoExportApplication(VideoExportConfig config) {
     this.config = config;
@@ -56,6 +60,7 @@ public class VideoExportApplication implements ApplicationListener {
 
     fixedDeltaTime = 1f / config.getFps();
     totalFrames = config.getFps() * config.getDurationSeconds();
+    tailFrames = config.getFps(); // ~1s of extra footage after an early stop condition fires
 
     try {
       File outputFile = new File(config.getOutputPath());
@@ -76,12 +81,20 @@ public class VideoExportApplication implements ApplicationListener {
 
   @Override
   public void render() {
-    if (framesEncoded >= totalFrames) {
+    if (framesEncoded >= totalFrames || (stopFrame != null && framesEncoded >= stopFrame)) {
       finishAndExit();
       return;
     }
 
     world.animate(fixedDeltaTime);
+    collisionSystem.resolve(world);
+
+    Integer stopAfterCollisionCount = config.getStopAfterCollisionCount();
+    if (stopFrame == null
+        && stopAfterCollisionCount != null
+        && collisionSystem.getCollisionEventCount() >= stopAfterCollisionCount) {
+      stopFrame = framesEncoded + tailFrames;
+    }
 
     ScreenUtils.clear(Color.valueOf("069f66"));
     spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
