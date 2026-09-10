@@ -1,8 +1,13 @@
 package vendredi.soir.agfj.system;
 
 import com.badlogic.gdx.math.Rectangle;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import lombok.Getter;
 import vendredi.soir.agfj.entity.AnimatedEntity;
 import vendredi.soir.agfj.entity.TexturedEntity;
 import vendredi.soir.agfj.game.GameWorld;
@@ -10,12 +15,17 @@ import vendredi.soir.agfj.graphics.sprites.SpriteAnimation;
 
 /**
  * Pairwise bounding-box collision among "solid" entities. O(n^2) - fine at demo scale, not meant
- * to scale to large entity counts.
+ * to scale to large entity counts. Also counts distinct collision events (a pair transitioning
+ * from separated to overlapping, not every frame they happen to stay in contact), for callers
+ * that want to react to or stop after N collisions.
  */
-public final class CollisionSystem {
-  private CollisionSystem() {}
+public class CollisionSystem {
+  @Getter private int collisionEventCount = 0;
 
-  public static void resolve(GameWorld world) {
+  private final Set<Map.Entry<AnimatedEntity, AnimatedEntity>> previouslyOverlapping =
+      new HashSet<>();
+
+  public void resolve(GameWorld world) {
     List<AnimatedEntity> solidEntities = new ArrayList<>();
     for (TexturedEntity entity : world.getEntities()) {
       if (entity instanceof AnimatedEntity animatedEntity && animatedEntity.isSolid()) {
@@ -23,18 +33,34 @@ public final class CollisionSystem {
       }
     }
 
+    Set<Map.Entry<AnimatedEntity, AnimatedEntity>> stillOverlapping = new HashSet<>();
+
     for (int i = 0; i < solidEntities.size(); i++) {
       for (int j = i + 1; j < solidEntities.size(); j++) {
-        resolvePair(solidEntities.get(i), solidEntities.get(j));
+        AnimatedEntity a = solidEntities.get(i);
+        AnimatedEntity b = solidEntities.get(j);
+
+        if (!resolvePair(a, b)) {
+          continue;
+        }
+
+        Map.Entry<AnimatedEntity, AnimatedEntity> pairKey = new AbstractMap.SimpleEntry<>(a, b);
+        stillOverlapping.add(pairKey);
+        if (!previouslyOverlapping.contains(pairKey)) {
+          collisionEventCount++;
+        }
       }
     }
+
+    previouslyOverlapping.clear();
+    previouslyOverlapping.addAll(stillOverlapping);
   }
 
-  private static void resolvePair(AnimatedEntity a, AnimatedEntity b) {
+  private boolean resolvePair(AnimatedEntity a, AnimatedEntity b) {
     Rectangle boundsA = a.getBoundingRectangle();
     Rectangle boundsB = b.getBoundingRectangle();
     if (!boundsA.overlaps(boundsB)) {
-      return;
+      return false;
     }
 
     float overlapX = Math.min(boundsA.x + boundsA.width, boundsB.x + boundsB.width)
@@ -47,9 +73,10 @@ public final class CollisionSystem {
     } else {
       separateAndBounce(a, b, overlapY, false, boundsA.y < boundsB.y);
     }
+    return true;
   }
 
-  private static void separateAndBounce(
+  private void separateAndBounce(
       AnimatedEntity a, AnimatedEntity b, float overlap, boolean xAxis, boolean aIsLower) {
     float push = overlap / 2f;
     float aSign = aIsLower ? -1f : 1f;
@@ -69,7 +96,7 @@ public final class CollisionSystem {
 
   // A controlled entity's position is driven by the mouse, not its own velocity - don't perturb
   // the velocity it'll resume with once released.
-  private static void flipVx(AnimatedEntity entity) {
+  private void flipVx(AnimatedEntity entity) {
     if (entity.isControlActive()) {
       return;
     }
@@ -77,7 +104,7 @@ public final class CollisionSystem {
     animation.setVx(-animation.getVx());
   }
 
-  private static void flipVy(AnimatedEntity entity) {
+  private void flipVy(AnimatedEntity entity) {
     if (entity.isControlActive()) {
       return;
     }

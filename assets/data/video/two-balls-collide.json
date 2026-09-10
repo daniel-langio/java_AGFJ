@@ -6,5 +6,6 @@
   "fps": 30,
   "durationSeconds": 10,
   "width": 600,
-  "height": 600
+  "height": 600,
+  "stopAfterCollisionCount": 2
 }
