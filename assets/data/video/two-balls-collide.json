@@ -4,7 +4,7 @@
   "sceneFile": "data/scenes/two-balls-collide-scene.json",
   "outputPath": "output/two-balls-collide.mp4",
   "fps": 30,
-  "durationSeconds": 10,
+  "durationSeconds": 60,
   "width": 600,
   "height": 600,
   "stopAfterCollisionCount": 2
