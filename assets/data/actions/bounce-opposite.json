@@ -1,0 +1,6 @@
+{
+  "id": "bounce-opposite",
+  "vx": -40,
+  "vy": -25,
+  "loop": true
+}

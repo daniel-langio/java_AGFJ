@@ -23,7 +23,6 @@ jobs:
         run: ./gradlew lwjgl3:videoExportJar --console=plain
 
       - name: Render ball-bounce scene to video
-        working-directory: .
         run: |
           xvfb-run -a java -jar lwjgl3/build/libs/AGFJ-video-export-1.0.0.jar assets/data/video/ball-bounce.json
 
@@ -31,4 +30,14 @@ jobs:
         with:
           name: ball-bounce-showoff
           path: output/ball-bounce.mp4
+          retention-days: 30
+
+      - name: Render two-balls-collide scene to video
+        run: |
+          xvfb-run -a java -jar lwjgl3/build/libs/AGFJ-video-export-1.0.0.jar assets/data/video/two-balls-collide.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: two-balls-collide-showoff
+          path: output/two-balls-collide.mp4
           retention-days: 30
