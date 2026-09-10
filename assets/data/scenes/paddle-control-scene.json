@@ -1,0 +1,30 @@
+{
+  "id": "paddle-control",
+  "entities": [
+    {
+      "entityDefinitionId": "paddle",
+      "instanceName": "Paddle",
+      "x": 84,
+      "y": 20,
+      "solid": true,
+      "control": {
+        "type": "MOUSE",
+        "activateOn": "ON_HOVER",
+        "deactivateOn": "ON_OUT_HOVER"
+      }
+    },
+    {
+      "entityDefinitionId": "ball",
+      "instanceName": "Ball",
+      "x": 92,
+      "y": 100,
+      "solid": true,
+      "bounceBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 200
+      }
+    }
+  ]
+}

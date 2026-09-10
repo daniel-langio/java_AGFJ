@@ -1,0 +1,16 @@
+{
+  "id": "paddle",
+  "width": 32,
+  "height": 8,
+  "defaultActionId": "idle",
+  "animations": [
+    {
+      "actionId": "idle",
+      "spriteSheetPath": "sprites/prototypes/paddle/Paddle.png",
+      "frameWidth": 64,
+      "frameHeight": 16,
+      "frameCount": 1,
+      "fps": 1
+    }
+  ]
+}

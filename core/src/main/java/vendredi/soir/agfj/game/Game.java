@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import vendredi.soir.agfj.system.CollisionSystem;
+import vendredi.soir.agfj.system.ControlSystem;
 
 public abstract class Game {
   public static final int WORLD_WIDTH = 200;
@@ -14,12 +16,14 @@ public abstract class Game {
   protected final SpriteBatch spriteBatch;
   protected final Viewport viewport;
   protected final GameWorld world;
+  protected final ControlSystem controlSystem;
 
   protected double upTime = 0.0;
 
   public Game() {
     this.spriteBatch = new SpriteBatch();
     this.viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT);
+    this.controlSystem = new ControlSystem();
 
     this.world = new GameWorld();
     init();
@@ -28,13 +32,16 @@ public abstract class Game {
   // create entities and do settings here
   public abstract void init();
 
-  public void input() {}
+  public void input() {
+    controlSystem.update(world, viewport);
+  }
 
   public void logic() {
     final float deltaTime = Gdx.graphics.getDeltaTime();
 
     upTime += deltaTime;
     world.animate(deltaTime);
+    CollisionSystem.resolve(world);
   }
 
   public void draw() {

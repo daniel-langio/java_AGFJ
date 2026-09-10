@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import vendredi.soir.agfj.data.ControlDefinition;
 import vendredi.soir.agfj.graphics.sprites.SpriteAnimation;
 
 @Getter
@@ -14,6 +15,10 @@ public class AnimatedEntity extends TexturedEntity {
   private final List<SpriteAnimation> animations;
   private String currentActionId;
   @Setter private Rectangle bounceBounds;
+  @Setter private ControlDefinition controlDefinition;
+  @Setter private boolean controlActive = false;
+  @Setter private float controlElapsedSeconds = 0f;
+  @Setter private boolean solid = false;
 
   public AnimatedEntity(String name, List<SpriteAnimation> animations, String defaultActionId) {
     super(name, resolveDefaultTexture(animations, defaultActionId));
@@ -41,6 +46,10 @@ public class AnimatedEntity extends TexturedEntity {
   public void animate(float deltaTime) {
     SpriteAnimation currentAnimation = getCurrentAnimation();
     currentAnimation.animate(deltaTime);
+    if (controlActive) {
+      // Control has full authority over position while active; only the flipbook still runs.
+      return;
+    }
     translate(currentAnimation.getVx() * deltaTime, currentAnimation.getVy() * deltaTime);
     if (bounceBounds != null) {
       bounceWithinBounds(currentAnimation);

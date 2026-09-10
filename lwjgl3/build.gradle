@@ -50,6 +50,24 @@ run {
   if (os.contains('mac')) jvmArgs += "-XstartOnFirstThread"
 }
 
+// Interactive preview demos live under src/test (see demo/<scenario>/), so visualizing a scenario
+// never needs a temporary edit to MyGame. Each one gets its own JavaExec task below.
+tasks.register('runBallBounce', JavaExec) {
+  group = 'application'
+  mainClass.set('vendredi.soir.agfj.lwjgl3.demo.ballbounce.BallBounceLauncher')
+  classpath = sourceSets.test.runtimeClasspath
+  workingDir = rootProject.file('assets').path
+  if (os.contains('mac')) jvmArgs += "-XstartOnFirstThread"
+}
+
+tasks.register('runPaddleControl', JavaExec) {
+  group = 'application'
+  mainClass.set('vendredi.soir.agfj.lwjgl3.demo.paddlecontrol.PaddleControlLauncher')
+  classpath = sourceSets.test.runtimeClasspath
+  workingDir = rootProject.file('assets').path
+  if (os.contains('mac')) jvmArgs += "-XstartOnFirstThread"
+}
+
 jar {
 // sets the name of the .jar file this produces to the name of the game or app, with the version after.
   archiveFileName.set("${appName}-${projectVersion}.jar")
