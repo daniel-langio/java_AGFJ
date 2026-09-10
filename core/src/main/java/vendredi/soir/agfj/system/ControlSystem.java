@@ -19,9 +19,12 @@ import vendredi.soir.agfj.game.GameWorld;
  */
 public class ControlSystem {
   private AnimatedEntity activeEntity;
+  private boolean leftButtonWasPressed;
 
   public void update(GameWorld world, Viewport viewport) {
     Vector2 mouseWorld = viewport.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+    boolean leftButtonPressed = Gdx.input.isButtonPressed(Buttons.LEFT);
+    boolean leftButtonJustReleased = leftButtonWasPressed && !leftButtonPressed;
 
     for (TexturedEntity texturedEntity : world.getEntities()) {
       if (!(texturedEntity instanceof AnimatedEntity entity)) {
@@ -33,11 +36,13 @@ public class ControlSystem {
       }
 
       if (entity.isControlActive()) {
-        updateActive(entity, control, mouseWorld);
+        updateActive(entity, control, mouseWorld, leftButtonJustReleased);
       } else {
         tryActivate(entity, control, mouseWorld);
       }
     }
+
+    leftButtonWasPressed = leftButtonPressed;
   }
 
   private void tryActivate(AnimatedEntity entity, ControlDefinition control, Vector2 mouseWorld) {
@@ -60,12 +65,16 @@ public class ControlSystem {
     }
   }
 
-  private void updateActive(AnimatedEntity entity, ControlDefinition control, Vector2 mouseWorld) {
+  private void updateActive(
+      AnimatedEntity entity,
+      ControlDefinition control,
+      Vector2 mouseWorld,
+      boolean leftButtonJustReleased) {
     Rectangle bounds = entity.getBoundingRectangle();
     boolean shouldDeactivate =
         switch (control.getDeactivateOn()) {
           case TIMEOUT -> entity.getControlElapsedSeconds() >= control.getDeactivateAfterSeconds();
-          case ON_RELEASE_CLICK -> Gdx.input.isButtonJustReleased(Buttons.LEFT);
+          case ON_RELEASE_CLICK -> leftButtonJustReleased;
           case ON_OUT_HOVER -> !bounds.contains(mouseWorld);
         };
 
