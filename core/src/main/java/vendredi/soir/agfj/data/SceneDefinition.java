@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 public class SceneDefinition {
   private String id;
   private List<EntityInstanceDefinition> entities;
+  private Float simulationRange; // world units around the camera target; null = unbounded
 }

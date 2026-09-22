@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import vendredi.soir.agfj.entity.AnimatedEntity;
 import vendredi.soir.agfj.entity.TexturedEntity;
 import vendredi.soir.agfj.graphics.sprites.SpriteLoader;
@@ -17,6 +18,9 @@ import vendredi.soir.agfj.graphics.sprites.SpriteLoader;
 @RequiredArgsConstructor
 public class GameWorld {
   private List<TexturedEntity> entities = new ArrayList<>();
+  @Setter private AnimatedEntity cameraTarget;
+  @Setter private float simulationRange = Float.MAX_VALUE;
+  private final Set<String> activeEvents = new HashSet<>();
 
   public void addEntity(TexturedEntity entity) {
     entities.add(entity);
@@ -29,7 +33,33 @@ public class GameWorld {
             .map(entity -> (AnimatedEntity) entity)
             .toList();
 
-    animatedEntities.forEach(animatedEntity -> animatedEntity.animate(deltaTime));
+    animatedEntities.stream()
+        .filter(this::isWithinSimulationRange)
+        .forEach(animatedEntity -> animatedEntity.animate(deltaTime));
+  }
+
+  // Physics gating only - trigger/action evaluation (TriggerSystem) still runs on every entity
+  // regardless of range, since a rule-driven action (e.g. a schedule) must stay correct on query
+  // whether or not the entity is currently being physically simulated.
+  private boolean isWithinSimulationRange(AnimatedEntity entity) {
+    if (cameraTarget == null || entity == cameraTarget || simulationRange == Float.MAX_VALUE) {
+      return true;
+    }
+    float dx = entity.getX() - cameraTarget.getX();
+    float dy = entity.getY() - cameraTarget.getY();
+    return Math.sqrt(dx * dx + dy * dy) <= simulationRange;
+  }
+
+  public void raiseEvent(String name) {
+    activeEvents.add(name);
+  }
+
+  public boolean isEventActive(String name) {
+    return activeEvents.contains(name);
+  }
+
+  public void clearEvents() {
+    activeEvents.clear();
   }
 
   public void dispose() {
