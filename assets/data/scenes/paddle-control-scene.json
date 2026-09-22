@@ -7,11 +7,14 @@
       "x": 84,
       "y": 20,
       "solid": true,
-      "control": {
-        "type": "MOUSE",
-        "activateOn": "ON_HOVER",
-        "deactivateOn": "ON_OUT_HOVER"
-      }
+      "actionRules": [
+        {
+          "trigger": { "type": "HOVER" },
+          "actionId": "idle",
+          "priority": 10,
+          "followTrigger": true
+        }
+      ]
     },
     {
       "entityDefinitionId": "ball",

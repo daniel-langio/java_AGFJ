@@ -1,5 +1,6 @@
 package vendredi.soir.agfj.data;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ public class EntityInstanceDefinition {
   private float y = 0f;
   private String initialActionId;
   private BoundsDefinition bounceBounds;
-  private ControlDefinition control;
+  private List<ActionRule> actionRules;
   private boolean solid = false;
+  private boolean cameraTarget = false;
 }

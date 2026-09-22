@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import vendredi.soir.agfj.entity.AnimatedEntity;
 import vendredi.soir.agfj.system.CollisionSystem;
-import vendredi.soir.agfj.system.ControlSystem;
+import vendredi.soir.agfj.system.TriggerSystem;
 
 public abstract class Game {
   public static final int WORLD_WIDTH = 200;
@@ -16,7 +17,7 @@ public abstract class Game {
   protected final SpriteBatch spriteBatch;
   protected final Viewport viewport;
   protected final GameWorld world;
-  protected final ControlSystem controlSystem;
+  protected final TriggerSystem triggerSystem;
   protected final CollisionSystem collisionSystem;
 
   protected double upTime = 0.0;
@@ -24,7 +25,7 @@ public abstract class Game {
   public Game() {
     this.spriteBatch = new SpriteBatch();
     this.viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT);
-    this.controlSystem = new ControlSystem();
+    this.triggerSystem = new TriggerSystem();
     this.collisionSystem = new CollisionSystem();
 
     this.world = new GameWorld();
@@ -35,7 +36,7 @@ public abstract class Game {
   public abstract void init();
 
   public void input() {
-    controlSystem.update(world, viewport);
+    triggerSystem.update(world, viewport, upTime);
   }
 
   public void logic() {
@@ -44,9 +45,12 @@ public abstract class Game {
     upTime += deltaTime;
     world.animate(deltaTime);
     collisionSystem.resolve(world);
+    world.clearEvents();
   }
 
   public void draw() {
+    followCameraTarget();
+
     ScreenUtils.clear(Color.valueOf("069f66"));
     spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
     spriteBatch.begin();
@@ -54,6 +58,18 @@ public abstract class Game {
     world.draw(spriteBatch);
 
     spriteBatch.end();
+  }
+
+  private void followCameraTarget() {
+    AnimatedEntity target = world.getCameraTarget();
+    if (target == null) {
+      return;
+    }
+    viewport
+        .getCamera()
+        .position
+        .set(target.getX() + target.getWidth() / 2f, target.getY() + target.getHeight() / 2f, 0);
+    viewport.getCamera().update();
   }
 
   public void dispose() {

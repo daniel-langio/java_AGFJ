@@ -2,11 +2,12 @@ package vendredi.soir.agfj.factory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import vendredi.soir.agfj.data.ActionDefinition;
+import vendredi.soir.agfj.data.ActionRule;
 import vendredi.soir.agfj.data.BoundsDefinition;
-import vendredi.soir.agfj.data.ControlDefinition;
-import vendredi.soir.agfj.data.DeactivationTrigger;
 import vendredi.soir.agfj.data.EntityDefinition;
 import vendredi.soir.agfj.data.EntityInstanceDefinition;
 import vendredi.soir.agfj.data.SceneDefinition;
@@ -23,6 +24,10 @@ public final class SceneLoader {
       Map<String, ActionDefinition> actions) {
     SceneDefinition scene =
         GameDataJson.instance().fromJson(SceneDefinition.class, Gdx.files.internal(sceneFilePath));
+
+    if (scene.getSimulationRange() != null) {
+      world.setSimulationRange(scene.getSimulationRange());
+    }
 
     for (EntityInstanceDefinition instance : scene.getEntities()) {
       EntityDefinition entityDefinition = entityDefinitions.get(instance.getEntityDefinitionId());
@@ -48,25 +53,20 @@ public final class SceneLoader {
                 bounceBounds.getHeight()));
       }
 
-      ControlDefinition control = instance.getControl();
-      if (control != null) {
-        validateControl(control, instance.getEntityDefinitionId());
-        entity.setControlDefinition(control);
+      List<ActionRule> actionRules = instance.getActionRules();
+      if (actionRules != null) {
+        entity.setActionRules(
+            actionRules.stream()
+                .sorted(Comparator.comparingInt(ActionRule::getPriority).reversed())
+                .toList());
       }
       entity.setSolid(instance.isSolid());
 
-      world.addEntity(entity);
-    }
-  }
+      if (instance.isCameraTarget()) {
+        world.setCameraTarget(entity);
+      }
 
-  private static void validateControl(ControlDefinition control, String entityDefinitionId) {
-    if (control.getDeactivateOn() == DeactivationTrigger.TIMEOUT
-        && (control.getDeactivateAfterSeconds() == null || control.getDeactivateAfterSeconds() <= 0)) {
-      throw new IllegalArgumentException(
-          String.format(
-              "Entity %s declares control.deactivateOn=TIMEOUT but no positive"
-                  + " deactivateAfterSeconds was given",
-              entityDefinitionId));
+      world.addEntity(entity);
     }
   }
 }
