@@ -97,7 +97,7 @@ public class CollisionSystem {
   // A controlled entity's position is driven by the mouse, not its own velocity - don't perturb
   // the velocity it'll resume with once released.
   private void flipVx(AnimatedEntity entity) {
-    if (entity.isControlActive()) {
+    if (entity.isPositionDrivenByTrigger()) {
       return;
     }
     SpriteAnimation animation = entity.getCurrentAnimation();
@@ -105,7 +105,7 @@ public class CollisionSystem {
   }
 
   private void flipVy(AnimatedEntity entity) {
-    if (entity.isControlActive()) {
+    if (entity.isPositionDrivenByTrigger()) {
       return;
     }
     SpriteAnimation animation = entity.getCurrentAnimation();
