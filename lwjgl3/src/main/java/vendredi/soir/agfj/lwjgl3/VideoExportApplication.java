@@ -20,9 +20,11 @@ import vendredi.soir.agfj.data.VideoExportConfig;
 import vendredi.soir.agfj.factory.ActionLoader;
 import vendredi.soir.agfj.factory.EntityDefinitionLoader;
 import vendredi.soir.agfj.factory.SceneLoader;
+import vendredi.soir.agfj.entity.AnimatedEntity;
 import vendredi.soir.agfj.game.Game;
 import vendredi.soir.agfj.game.GameWorld;
 import vendredi.soir.agfj.system.CollisionSystem;
+import vendredi.soir.agfj.system.TriggerSystem;
 
 /**
  * Drives the same GameWorld/AnimatedEntity/SceneLoader pipeline as the interactive game, but with
@@ -36,12 +38,14 @@ public class VideoExportApplication implements ApplicationListener {
   private Viewport viewport;
   private GameWorld world;
   private final CollisionSystem collisionSystem = new CollisionSystem();
+  private final TriggerSystem triggerSystem = new TriggerSystem();
   private AWTSequenceEncoder encoder;
   private int totalFrames;
   private int framesEncoded;
   private float fixedDeltaTime;
   private int tailFrames;
   private Integer stopFrame;
+  private double upTime = 0;
 
   public VideoExportApplication(VideoExportConfig config) {
     this.config = config;
@@ -86,8 +90,11 @@ public class VideoExportApplication implements ApplicationListener {
       return;
     }
 
+    upTime += fixedDeltaTime;
+    triggerSystem.update(world, viewport, upTime);
     world.animate(fixedDeltaTime);
     collisionSystem.resolve(world);
+    world.clearEvents();
 
     Integer stopAfterCollisionCount = config.getStopAfterCollisionCount();
     if (stopFrame == null
@@ -96,6 +103,7 @@ public class VideoExportApplication implements ApplicationListener {
       stopFrame = framesEncoded + tailFrames;
     }
 
+    followCameraTarget();
     ScreenUtils.clear(Color.valueOf("069f66"));
     spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
     spriteBatch.begin();
@@ -112,6 +120,18 @@ public class VideoExportApplication implements ApplicationListener {
     }
 
     framesEncoded++;
+  }
+
+  private void followCameraTarget() {
+    AnimatedEntity target = world.getCameraTarget();
+    if (target == null) {
+      return;
+    }
+    viewport
+        .getCamera()
+        .position
+        .set(target.getX() + target.getWidth() / 2f, target.getY() + target.getHeight() / 2f, 0);
+    viewport.getCamera().update();
   }
 
   private void finishAndExit() {
