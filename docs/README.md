@@ -1,4 +1,4 @@
-# AGFJ docs
+# Nofy docs
 
 Usage guides, by task:
 

@@ -4,7 +4,7 @@ Renders a scene headlessly to an MP4 — same `GameWorld`/`SceneLoader` pipeline
 
 ```
 ./gradlew lwjgl3:videoExportJar
-java -jar lwjgl3/build/libs/AGFJ-video-export-1.0.0.jar assets/data/video/ball-bounce.json
+java -jar lwjgl3/build/libs/Nofy-video-export-1.0.0.jar assets/data/video/ball-bounce.json
 ```
 
 ## Config (`assets/data/video/*.json`)
