@@ -65,8 +65,11 @@ final class WalkCycle {
 
     float thighNear = THIGH_SWING * near;
     float thighFar = THIGH_SWING * far;
-    float shinNear = -KNEE_BEND * knee(phase);
-    float shinFar = -KNEE_BEND * knee(phase + MathUtils.PI);
+    // A knee folds backwards - the heel comes up towards the buttock. Arnold is drawn facing
+    // left, so behind him is +x, and a positive rotation is what carries the foot there. Negating
+    // this throws the shin out in front of the knee instead, which reads as a bird's leg.
+    float shinNear = KNEE_BEND * knee(phase);
+    float shinFar = KNEE_BEND * knee(phase + MathUtils.PI);
 
     character.setBoneRotation("thigh_near", blend * thighNear);
     character.setBoneRotation("thigh_far", blend * thighFar);
