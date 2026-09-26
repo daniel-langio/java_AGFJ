@@ -62,7 +62,7 @@ public class BodyPart implements Drawable {
         -offsetY,
         width,
         height,
-        bone.getWorldScale(),
+        bone.isFlipped() ? -bone.getWorldScale() : bone.getWorldScale(),
         bone.getWorldScale(),
         bone.getWorldRotation());
   }

@@ -85,11 +85,21 @@ posed art's extent — bounds that followed swinging limbs would make solid enti
 ## Previewing
 
 ```sh
-./gradlew lwjgl3:runArnold
+./gradlew lwjgl3:runArnold       # bind pose, one shoulder swinging
+./gradlew lwjgl3:runArnoldWalk   # walking under keyboard control
 ```
 
 At rest Arnold stands in the rig's bind pose, which should match the rig kit's own preview render.
-The demo swings one shoulder so the forearm and hand visibly follow it.
+`runArnold` swings one shoulder so the forearm and hand visibly follow it.
+
+`runArnoldWalk` moves him with the left/right arrows or A/D. Two things in it are worth borrowing:
+
+- **Facing** is `RiggedEntity.setFlipped`, which reflects the whole rig across the character's own
+  centre line — he turns on the spot, and no mirrored art is needed.
+- **The walk is procedural**, computed from one phase angle rather than keyframes (see `WalkCycle`),
+  because clips do not exist yet. Its travel speed is *derived* from the rig's leg length and swing
+  angle rather than picked, which is what stops the feet skating; hard-coding a speed and tuning it
+  by eye is how characters end up moon-walking.
 
 ## Not here yet
 

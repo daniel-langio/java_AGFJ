@@ -51,6 +51,9 @@ public class RiggedEntity implements Entity {
   private float y = 0f;
   private String currentActionId;
 
+  /** Mirrors the character horizontally, so it can face either way without a second set of art. */
+  @Setter private boolean flipped = false;
+
   @Setter private List<ActionRule> actionRules = List.of();
   @Setter private boolean solid = false;
   @Setter private boolean positionDrivenByTrigger = false;
@@ -157,6 +160,13 @@ public class RiggedEntity implements Entity {
 
   private void updateBones() {
     bones.forEach(bone -> bone.update(x, y));
+
+    if (flipped) {
+      // Mirror only once the whole chain is resolved: every bone reflects across the character's
+      // own centre line, so it turns on the spot rather than drifting sideways.
+      float axisX = x + width / 2f;
+      bones.forEach(bone -> bone.mirrorAbout(axisX));
+    }
   }
 
   /**

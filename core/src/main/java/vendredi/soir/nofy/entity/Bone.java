@@ -35,6 +35,7 @@ public class Bone {
   private float worldY;
   private float worldRotation;
   private float worldScale = 1f;
+  private boolean flipped;
 
   public Bone(String id, Bone parent, float bindOffsetX, float bindOffsetY) {
     this.id = id;
@@ -52,6 +53,8 @@ public class Bone {
   void update(float originX, float originY) {
     float offsetX = bindOffsetX + x;
     float offsetY = bindOffsetY + y;
+
+    flipped = false;
 
     if (parent == null) {
       // Rotating the root turns the whole character about the root pivot, so the pivot itself
@@ -71,5 +74,19 @@ public class Bone {
     worldScale = parent.worldScale * scale;
     worldX = parent.worldX + parent.worldScale * (offsetX * cos - offsetY * sin);
     worldY = parent.worldY + parent.worldScale * (offsetX * sin + offsetY * cos);
+  }
+
+  /**
+   * Reflects this bone's world transform across a vertical line, turning a character to face the
+   * other way. Applied after the whole chain has been updated, so every bone mirrors against the
+   * same axis rather than each against its parent.
+   *
+   * <p>Reflecting a rotation inverts it - S(-1,1)R(a) equals R(-a)S(-1,1) - which is why the angle
+   * is negated here and the part is drawn with a negative horizontal scale.
+   */
+  void mirrorAbout(float axisX) {
+    worldX = 2f * axisX - worldX;
+    worldRotation = -worldRotation;
+    flipped = true;
   }
 }

@@ -2,6 +2,7 @@ package vendredi.soir.nofy.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ class RiggedEntityTest {
   "id": "test", "canvas": 1000,
   "figureX": 0, "figureY": 0, "figureWidth": 100, "figureHeight": 200,
   "bones": [
-    { "id": "hand", "parent": "arm",  "pivotX": 50, "pivotY": 20,
+    { "id": "hand", "parent": "arm",  "pivotX": 70, "pivotY": 20,
       "part": "hand.png", "trimX": 45, "trimY": 10,  "partWidth": 10, "partHeight": 10, "z": 3 },
     { "id": "root", "parent": null,   "pivotX": 50, "pivotY": 100,
       "part": "root.png", "trimX": 40, "trimY": 90,  "partWidth": 40, "partHeight": 20, "z": 5 },
@@ -50,7 +51,7 @@ class RiggedEntityTest {
     // sits 100 units up from the entity's foot - and one at y=180 sits only 20 up.
     assertBoneAt(entity, "root", 50f, 100f);
     assertBoneAt(entity, "arm", 50f, 140f);
-    assertBoneAt(entity, "hand", 50f, 180f);
+    assertBoneAt(entity, "hand", 70f, 180f);
     assertBoneAt(entity, "foot", 50f, 20f);
   }
 
@@ -61,7 +62,7 @@ class RiggedEntityTest {
     entity.animate(0f);
 
     assertBoneAt(entity, "root", 57f, 113f);
-    assertBoneAt(entity, "hand", 57f, 193f);
+    assertBoneAt(entity, "hand", 77f, 193f);
 
     // Twice as tall means every offset from the entity's corner doubles, the figure's own width
     // included - the rig is authored once and scaled, not re-authored per size.
@@ -80,14 +81,44 @@ class RiggedEntityTest {
 
     // The arm's own pivot does not move - a bone turns about itself.
     assertBoneAt(entity, "arm", 50f, 140f);
-    // The hand sits 40 units above the arm at rest, so a quarter turn counter-clockwise swings it
-    // 40 units to the left instead. Getting this wrong - composing in the child's frame rather
-    // than the parent's - leaves the hand unmoved.
-    assertBoneAt(entity, "hand", 10f, 140f);
+    // The hand sits 40 up and 20 across from the arm at rest, so a quarter turn counter-clockwise
+    // takes it 40 to the left and 20 up instead. Getting this wrong - composing in the child's
+    // frame rather than the parent's - leaves the hand unmoved.
+    assertBoneAt(entity, "hand", 10f, 160f);
     assertEquals(90f, entity.bone("hand").getWorldRotation(), TOLERANCE);
 
     // A sibling chain is untouched by it.
     assertBoneAt(entity, "foot", 50f, 20f);
+  }
+
+  @Test
+  void flipping_reflectsTheRigAboutTheCharactersOwnCentre() {
+    RiggedEntity upright = posed(false);
+    RiggedEntity mirrored = posed(true);
+
+    // The figure is 100 wide at x=0, so it turns about x=50 - on the spot, not drifting sideways.
+    float axis = 50f;
+
+    for (String boneId : List.of("root", "arm", "hand", "foot")) {
+      Bone before = upright.bone(boneId);
+      Bone after = mirrored.bone(boneId);
+
+      assertEquals(2f * axis - before.getWorldX(), after.getWorldX(), TOLERANCE, boneId + " x");
+      assertEquals(before.getWorldY(), after.getWorldY(), TOLERANCE, boneId + " y is unchanged");
+      // Reflecting a rotation inverts it; the part is then drawn with a negative horizontal scale.
+      assertEquals(
+          -before.getWorldRotation(), after.getWorldRotation(), TOLERANCE, boneId + " rotation");
+      assertTrue(after.isFlipped(), boneId + " is flipped");
+    }
+  }
+
+  /** Posed rather than at rest, so the reflection is checked against a non-symmetric character. */
+  private static RiggedEntity posed(boolean flipped) {
+    RiggedEntity entity = entity(FIGURE_HEIGHT);
+    entity.setBoneRotation("arm", 30f);
+    entity.setFlipped(flipped);
+    entity.animate(0f);
+    return entity;
   }
 
   @Test
