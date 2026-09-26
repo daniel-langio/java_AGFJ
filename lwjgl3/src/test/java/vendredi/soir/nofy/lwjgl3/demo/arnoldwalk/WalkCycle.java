@@ -33,11 +33,23 @@ final class WalkCycle {
   /** How far the hips drop at the bottom of a stride, in world units. */
   private static final float HIP_BOB = 0.5f;
 
-  /** A knee folds after its leg passes behind, not while it is swinging forward. */
-  private static final float KNEE_LAG = 1.1f;
+  /**
+   * Where in the cycle the knee folds. A leg is straight through its stance - planted, with the
+   * body travelling over it - and folds through its swing, while it is off the ground coming
+   * forward. With speed matched to stride, the planted foot is world-stationary around phase 0, so
+   * stance is the half-cycle centred there and the fold belongs to the other half: -PI/2, nudged
+   * slightly early so the knee breaks at toe-off rather than at mid-swing.
+   *
+   * <p>Getting this half a cycle out bends the knee of whichever leg is carrying the weight, and
+   * the walk reads as running backwards.
+   */
+  private static final float KNEE_LAG = -1.3f;
 
   /** Per second; how quickly the walk pose eases in when starting and out when stopping. */
   private static final float BLEND_RATE = 9f;
+
+  /** 0 is a pure sine swing, 1 a pure triangle wave. */
+  private static final float TRIANGLE_BLEND = 0.7f;
 
   private float phase;
   private float blend;
@@ -48,7 +60,7 @@ final class WalkCycle {
     }
     blend = MathUtils.lerp(blend, walking ? 1f : 0f, Math.min(1f, deltaTime * BLEND_RATE));
 
-    float near = MathUtils.sin(phase);
+    float near = swing(phase);
     float far = -near;
 
     float thighNear = THIGH_SWING * near;
@@ -72,6 +84,20 @@ final class WalkCycle {
 
     // Two dips per cycle: the body drops once per step, not once per stride.
     character.bone("pelvis").setY(blend * -HIP_BOB * Math.abs(near));
+  }
+
+  /**
+   * The thigh's swing curve, a sine flattened towards a triangle wave.
+   *
+   * <p>A pure sine's rate of change peaks mid-stance and falls to nothing at the ends, so a planted
+   * foot slides backwards through the middle of a step and forwards at either end. A triangle wave
+   * has a constant rate of change, which is exactly what keeps a foot still while the body travels
+   * over it - but it turns at the extremes like a hinge, so only part of the way there.
+   */
+  private static float swing(float phase) {
+    float sine = MathUtils.sin(phase);
+    float triangle = (2f / MathUtils.PI) * (float) Math.asin(sine);
+    return MathUtils.lerp(sine, triangle, TRIANGLE_BLEND);
   }
 
   private static float knee(float phase) {
