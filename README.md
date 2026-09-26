@@ -1,4 +1,4 @@
-# AGFJ
+# Nofy
 
 A libGDX prototype for interactive animated scenes: entities and their actions (walk, jump, bounce, ...) are described in JSON files, not hardcoded in Java.
 

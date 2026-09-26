@@ -19,7 +19,7 @@ apply plugin: 'io.github.fourlastor.construo'
 import io.github.fourlastor.construo.Target
 
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
-mainClassName = 'vendredi.soir.agfj.lwjgl3.Lwjgl3Launcher'
+mainClassName = 'vendredi.soir.nofy.lwjgl3.Lwjgl3Launcher'
 application.setMainClass(mainClassName)
 eclipse.project.name = appName + '-lwjgl3'
 java.sourceCompatibility = 17
@@ -54,7 +54,7 @@ run {
 // never needs a temporary edit to MyGame. Each one gets its own JavaExec task below.
 tasks.register('runBallBounce', JavaExec) {
   group = 'application'
-  mainClass.set('vendredi.soir.agfj.lwjgl3.demo.ballbounce.BallBounceLauncher')
+  mainClass.set('vendredi.soir.nofy.lwjgl3.demo.ballbounce.BallBounceLauncher')
   classpath = sourceSets.test.runtimeClasspath
   workingDir = rootProject.file('assets').path
   if (os.contains('mac')) jvmArgs += "-XstartOnFirstThread"
@@ -62,7 +62,7 @@ tasks.register('runBallBounce', JavaExec) {
 
 tasks.register('runPaddleControl', JavaExec) {
   group = 'application'
-  mainClass.set('vendredi.soir.agfj.lwjgl3.demo.paddlecontrol.PaddleControlLauncher')
+  mainClass.set('vendredi.soir.nofy.lwjgl3.demo.paddlecontrol.PaddleControlLauncher')
   classpath = sourceSets.test.runtimeClasspath
   workingDir = rootProject.file('assets').path
   if (os.contains('mac')) jvmArgs += "-XstartOnFirstThread"
@@ -100,7 +100,7 @@ tasks.register('videoExportJar', Jar) {
   from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
   exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
   manifest {
-    attributes 'Main-Class': 'vendredi.soir.agfj.lwjgl3.VideoExportLauncher'
+    attributes 'Main-Class': 'vendredi.soir.nofy.lwjgl3.VideoExportLauncher'
   }
   doLast {
     file(archiveFile).setExecutable(true, false)
@@ -167,7 +167,7 @@ construo {
         architecture.set(Target.Architecture.AARCH64)
         jdkUrl.set("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.15_6.tar.gz")
         // macOS needs an identifier
-        identifier.set("vendredi.soir.agfj." + appName)
+        identifier.set("vendredi.soir.nofy." + appName)
         // Optional: icon for macOS, as an ICNS file
         macIcon.set(project.file("icons/logo.icns"))
       }
@@ -175,7 +175,7 @@ construo {
         architecture.set(Target.Architecture.X86_64)
         jdkUrl.set("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_x64_mac_hotspot_17.0.15_6.tar.gz")
         // macOS needs an identifier
-        identifier.set("vendredi.soir.agfj." + appName)
+        identifier.set("vendredi.soir.nofy." + appName)
         // Optional: icon for macOS, as an ICNS file
         macIcon.set(project.file("icons/logo.icns"))
       }
